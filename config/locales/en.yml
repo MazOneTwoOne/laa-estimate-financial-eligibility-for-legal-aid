@@ -6,6 +6,10 @@ en:
           attributes:
             level_of_help:
               blank: Select the level of help your client needs
+        area_of_law_form:
+          attributes:
+            area_of_law:
+              blank: Please select the area of law the matter relates to
         tribunal_form:
           attributes:
             upper_tribunal:
@@ -502,6 +506,19 @@ en:
       controlled_hint: This includes legal help, help at court, family help (lower) and family mediation
       certificated: Civil certificated or licensed legal work
       certificated_hint: This includes full representation and family help (higher)
+    area_of_law:
+      title: Which type of matter is this?
+      asylum: Asylum in the Upper Tribunal
+      immigration: Immigration in the Upper Tribunal
+      domestic_abuse: Domestic abuse
+      domestic_abuse_hint: Upper eligibility...finish this off I need glasses
+      other_area_of_law: Another legal matter
+      domestic_abuse_guidance:
+        text: Guidance on domestic abuse or violence
+        link: https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/1045682/Lord_Chancellor_s_guidance_on.pdf#page=13
+      tribunal_guidance:
+        text:  Guidance on Upper Tribunal matters
+        link: need_something_to_go_here_no_link_on_the_jira_ticket
     tribunal:
       title: Does the case relate to proceedings in the Immigration and Asylum Chamber of either the First-tier or Upper Tribunal?
       guidance_text: Guide to determining controlled work

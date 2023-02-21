@@ -1,0 +1,28 @@
+- content_for :page_title
+  = t(".title")
+- content_for :back do
+  = back_link(:area_of_law, @estimate, @back_buttons_invoke_browser_back_behaviour)
+
+.govuk-grid-column-two-thirds
+  = form_for(@form, url: wizard_path, method: :put) do |form|
+    = form.govuk_error_summary t("generic.error_summary_title")
+    = form.govuk_radio_buttons_fieldset :area_of_law,
+            legend: { text: t(".title"), size: "xl", tag: "h1" }
+      = form.govuk_radio_button :area_of_law, "asylum",
+              label: { text: t(".asylum") }, hint: nil
+      = form.govuk_radio_button :area_of_law, "immigration",
+              label: { text: t(".immigration") }, hint: nil
+      = form.govuk_radio_button :area_of_law, "domestic_abuse",
+              label: { text: t(".domestic_abuse") }, hint: { text: t(".domestic_abuse_hint") }
+
+      = form.govuk_radio_divider
+
+      = form.govuk_radio_button :area_of_law, "other_area_of_law",
+              label: { text: t(".other_area_of_law") }, hint: nil
+
+    = form.govuk_submit t("generic.save_and_continue")
+
+= render "shared/question_sidebar",
+        level_of_help: @estimate.level_of_help,
+        links: { t(".tribunal_guidance.text") => t(".tribunal_guidance.link"), \
+        t(".domestic_abuse_guidance.text") => t(".domestic_abuse_guidance.link") }
