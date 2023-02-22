@@ -9,15 +9,11 @@ class ApplicantCaseDetailsSection
     end
 
     def steps(estimate)
-      [level_of_help, matter_type(estimate), :applicant, dependant_details(estimate)].compact
+      [level_of_help, :matter_type, :applicant, dependant_details(estimate)].compact
     end
 
     def level_of_help
       :level_of_help if FeatureFlags.enabled?(:controlled)
-    end
-
-    def matter_type(estimate)
-      :matter_type if estimate.controlled? && FeatureFlags.enabled?(:asylum_and_immigration)
     end
 
     def dependant_details(estimate)
