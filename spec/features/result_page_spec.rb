@@ -36,7 +36,7 @@ RSpec.describe "Results Page" do
       let(:level_of_help) { "certificated" }
       let(:payload) { FactoryBot.build(:api_result, eligible: true) }
 
-      it "show eligible" do
+      it "shows eligible" do
         expect(page).to have_content "Your client is likely to qualify for civil legal aid"
       end
 
@@ -210,7 +210,7 @@ RSpec.describe "Results Page" do
       visit_check_answers(passporting: false, partner: true) do |step|
         case step
         when :partner_details
-          select_boolean_value("partner-details-form", :over_60, false)
+          select_boolean_value("partner-details-form", :over_60, true)
           select_radio(page:, form: "partner-details-form", field: "employment-status", value: "in_work")
         when :partner_employment
           fill_in "partner-employment-form-gross-income-field", with: 1000
