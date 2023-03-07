@@ -67,13 +67,8 @@ class CalculationResult
   end
 
   def client_assessed_capital
-    monetise([api_response.dig(:result_summary, :disposable_income, :assessed_capital), 0].compact.max)
+    monetise(api_response.dig(:result_summary, :disposable_income, :assessed_capital))
   end
-
-  # Why is this being used instead of the assessed capital from the result? This looks like CCQ doing calculations??
-  # def client_assessed_capital
-  #   monetise(capital_row_items(prefix: "").values.compact.sum(0))
-  # end
 
   def partner_assessed_capital
     # If the pensioner_capital_disregard is applied, it is applied by CFE in full even when the disregard is
@@ -93,11 +88,11 @@ class CalculationResult
   end
 
   def pensioner_disregard_applied?
-    api_response.dig(:result_summary, :capital, :pensioner_capital_disregard).positive?
+    api_response.dig(:result_summary, :capital, :pensioner_disregard_applied).positive?
   end
 
-  def pensioner_disregard_value
-    api_response.dig(:result_summary, :capital, :pensioner_disregard_applied)
+  def smod_applied?
+    api_response.dig(:result_summary, :capital, :subject_matter_of_dispute_disregard).positive?
   end
 
   def partner_income_rows
@@ -157,21 +152,13 @@ class CalculationResult
   end
 
   def client_capital_subtotal_rows
-    rows = if has_partner?
-             {
-               total_capital: monetise(api_response.dig(:result_summary, :capital, :total_capital)),
-               smod_disregard: monetise(-api_response.dig(:result_summary, :capital, :subject_matter_of_dispute_disregard)),
-               pensioner_capital_disregard: monetise(-api_response.dig(:result_summary, :capital, :pensioner_disregard_applied)),
-             }
-           else
-             {
-               total_capital: monetise(api_response.dig(:result_summary, :capital, :total_capital)),
-               pensioner_capital_disregard: monetise(-api_response.dig(:result_summary, :capital, :pensioner_disregard_applied)),
-               smod_disregard: monetise(-api_response.dig(:result_summary, :capital, :subject_matter_of_dispute_disregard)),
-             }
-           end
+    rows = {
+      total_capital: monetise(api_response.dig(:result_summary, :capital, :total_capital)),
+      smod_disregard: monetise(-api_response.dig(:result_summary, :capital, :subject_matter_of_dispute_disregard)),
+      pensioner_capital_disregard: monetise(-api_response.dig(:result_summary, :capital, :pensioner_disregard_applied)),
+    }
 
-    if (has_partner? && pensioner_disregard_applied?) || (pensioner_disregard_applied? && !pensioner_disregard_value.positive?)
+    if (has_partner? && pensioner_disregard_applied?) || !pensioner_disregard_applied?
       rows.except(:pensioner_capital_disregard)
     else
       rows
